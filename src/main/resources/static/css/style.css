@@ -1,0 +1,132 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+ul {
+    list-style: none;
+}
+
+.nav {
+    background-color: #666666;
+    border-top: solid whitesmoke 0.2px;
+    border-bottom: solid whitesmoke 0.2px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sub-nav-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 40px;
+}
+
+.title {
+    color: whitesmoke;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.podium {
+    width: 24px;
+    height: 24px;
+}
+
+.main-container {
+    padding-top: 20px;
+    background-color: #666666;
+    height: 100vh;
+
+}
+
+.wordle-container {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+
+
+.square {
+    background-color: #666666;
+    width: 10%;
+    height: 55px;
+    border: solid whitesmoke 2px;
+    font-size: 40px;
+    font-weight: bold;
+    color: whitesmoke;
+    text-align: center;
+    text-transform: uppercase;
+    caret-color: transparent;
+    padding-top: 10px;
+}
+
+
+
+/* The actual popup (appears on top) */
+.results  {
+  visibility: hidden;
+  width: 160px;
+  background-color: black;
+  color: whitesmoke;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 20px;
+}
+
+
+/* Mixin's */  
+@mixin transition {
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+}
+@mixin corners ($radius) {
+-moz-border-radius: $radius;
+-webkit-border-radius: $radius;
+border-radius: $radius; 
+-khtml-border-radius: $radius; 
+}
+
+body {
+background: base-color;
+font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+height:100%;
+}
+
+.wrapper {
+width: 800px;
+margin: 30px auto;
+color: white;
+text-align:center;
+}
+
+h1, h2, h3 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  font-size: 2.6em;
+  text-transform: uppercase;
+}
+
+#seconds, #tens{
+  font-size:2em;
+}
+
