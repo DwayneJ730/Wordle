@@ -27,7 +27,6 @@ var appendTens = document.getElementById("tens")
 var appendSeconds = document.getElementById("seconds")
 var Interval;
 
-
 function start() {
     clearInterval(Interval)
     Interval = setInterval(startTimer, 10);
