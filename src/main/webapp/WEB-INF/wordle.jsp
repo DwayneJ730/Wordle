@@ -33,9 +33,12 @@
             <li>
                 <ul class="sub-nav-list">
                     <li>
-                        <a href="/scores">
-                        	<img class="podium" src="/images/podium.png" alt="">
-                        </a>
+                    	<c:if test="${not empty userId}">
+							<a href="/scores">
+                        		<img class="podium" src="/images/podium.png" alt="">
+                       		</a>
+						</c:if>
+                        
                     </li>
                     <li>
                     	<c:if test="${not empty userId}">

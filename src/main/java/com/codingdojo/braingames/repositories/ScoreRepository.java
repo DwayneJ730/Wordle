@@ -6,8 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.codingdojo.braingames.models.Score;
 
-
-
 public interface ScoreRepository extends CrudRepository<Score, Long>{
 	List<Score> findAll();
 }

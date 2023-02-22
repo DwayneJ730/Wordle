@@ -26,7 +26,7 @@ public class WordleController {
 	
 	@GetMapping("/")
 	public String wordle(HttpSession session, Model model) {
-		if(session.getAttribute("userId") != null) {
+		if (session.getAttribute("userId") != null) {
 			model.addAttribute("userId", session.getAttribute("userId"));
 			Score newScore = new Score();
 			model.addAttribute("newScore", newScore);
@@ -34,21 +34,28 @@ public class WordleController {
 		} else {
 			return "wordle.jsp";
 		}
-		
 	}
 	
 	@PostMapping("/scores/new")
-	 public String nameFormProcess(@Valid @ModelAttribute("newScore") Score newScore, BindingResult result, HttpSession session, 
+	public String scoreProcess(@Valid @ModelAttribute("newScore") Score newScore, BindingResult result, HttpSession session, 
 			 Model model) {
-		 if(session.getAttribute("userId") == null) {
+		 if (session.getAttribute("userId") == null) {
 			 return "redirect:/";
 		 }
 		 model.addAttribute("userId", session.getAttribute("userId"));
 		 scoreServ.createScore(newScore);
 			 
 		 return "redirect:/";
-	 
-	 }
+	}
 	
-	
+	@GetMapping("/scores")
+	public String scores(HttpSession session, Model model) {
+		if (session.getAttribute("userId") != null) {
+			model.addAttribute("userId", session.getAttribute("userId"));
+			model.addAttribute("scores", scoreServ.allScores());
+			return "scores.jsp";
+		} else {
+			return "redirect:/";
+		}
+	}
 }

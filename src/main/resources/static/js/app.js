@@ -59,6 +59,7 @@ function startTimer() {
 for (let row = 0; row < 6; row++) {
     for (let col = 0; col < 5; col++) {
         rows.get(row)[col].addEventListener('keypress', (event) => {
+			
             const character = String.fromCharCode(event.charCode);
             if (rows.get(row)[col].innerText.length == 1) {
                 event.preventDefault();
@@ -81,10 +82,11 @@ for (let row = 0; row < 6; row++) {
             }
         })
     }
+}
     moveCursor(rows.get(0)[0])
 
     function moveCursor(input) {
-        setTimeout(function () { input.focus(); }, 1);
+        setTimeout(function () { input.focus(); }, 2);
     }
 
     function startTurn(row) {

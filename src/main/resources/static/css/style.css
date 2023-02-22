@@ -39,6 +39,30 @@ ul {
     height: 24px;
 }
 
+.page {
+	background-color: #666666;
+	height: 100vh;
+}
+
+.container {
+	
+	width: 100%;
+	padding-top: 200px;
+	display: inline-flex; 
+	justify-content: center; 
+	align-items: center;
+	gap: 100px;
+}
+.error {
+	color: red;
+}
+
+.register-login {
+	padding: 50px;
+	color: whitesmoke;
+	border: solid whitesmoke 0.2px;
+}
+
 .main-container {
     padding-top: 20px;
     background-color: #666666;
@@ -92,7 +116,19 @@ ul {
   gap: 20px;
 }
 
+.score-list {
+	width: 600px;
+	text-align: center;
+	padding-top: 100px;
+	margin-left: auto;
+    margin-right: auto;
+}
 
+.score-info {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /* Mixin's */  
 @mixin transition {
 -webkit-transition: all 0.5s ease-in-out;

@@ -25,9 +25,9 @@ public class ScoreService {
 	 }
 	 
 	 public Score findScore(Long id) {
-		 Optional<Score> optionalBabyName = scoreRepository.findById(id);
-		 if(optionalBabyName.isPresent()) {
-	         return optionalBabyName.get();
+		 Optional<Score> optionalScore = scoreRepository.findById(id);
+		 if (optionalScore.isPresent()) {
+	         return optionalScore.get();
 	     } else {
 	         return null;
 	     }
