@@ -1,4 +1,4 @@
-# Wordle
+# Wordle Replicate
 
 ## Project Description:
 
