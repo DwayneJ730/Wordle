@@ -1,3 +1,4 @@
+
 const row1 = document.getElementById("row1").children
 const row2 = document.getElementById("row2").children
 const row3 = document.getElementById("row3").children
@@ -6,7 +7,11 @@ const row5 = document.getElementById("row5").children
 const row6 = document.getElementById("row6").children
 
 const wordle = document.getElementById("5")
-const wordOfTheDay = "APPLE"
+let wordOfTheDay = "APPLE"
+
+
+
+
 
 const rows = new Map(
     [
@@ -59,7 +64,7 @@ function startTimer() {
 for (let row = 0; row < 6; row++) {
     for (let col = 0; col < 5; col++) {
         rows.get(row)[col].addEventListener('keypress', (event) => {
-			
+
             const character = String.fromCharCode(event.charCode);
             if (rows.get(row)[col].innerText.length == 1) {
                 event.preventDefault();
@@ -83,138 +88,141 @@ for (let row = 0; row < 6; row++) {
         })
     }
 }
-    moveCursor(rows.get(0)[0])
+moveCursor(rows.get(0)[0])
 
-    function moveCursor(input) {
-        setTimeout(function () { input.focus(); }, 2);
+function moveCursor(input) {
+    setTimeout(function () { input.focus(); }, 2);
+}
+
+function startTurn(row) {
+    if (row == 0) {
+        start()
     }
 
-    function startTurn(row) {
-        if (row == 0) {
-            start()
-        }
+    let guess = generateGuess(row)
+    let colors = compareWords(guess, wordOfTheDay)
 
-        let guess = generateGuess(row)
-        let colors = compareWords(guess, wordOfTheDay)
+    changeColors(row, colors)
 
-        changeColors(row, colors)
+    if (isGameOver(row, colors) === "win") {
+        gameFinished(row, true)
+    }
+    else if (isGameOver(row, colors) === "lose") {
+        gameFinished(row, false)
+    }
+}
 
-        if (isGameOver(row, colors) === "win") {
-            gameFinished(row, true)
-        }
-        else if (isGameOver(row, colors) === "lose") {
-            gameFinished(row, false)
-        }
+function generateGuess(row) {
+    let guess = ""
+    // find each letter of input
+    for (var i = 0; i < 5; i++) {
+        guess += rows.get(row)[i].innerText
     }
 
-    function generateGuess(row) {
-        let guess = ""
-        // find each letter of input
-        for (var i = 0; i < 5; i++) {
-            guess += rows.get(row)[i].innerText
-        }
+    return guess
+}
 
-        return guess
+function compareWords(guess, wordOfTheDay) {
+    let dictWOTD = wordToDict(wordOfTheDay)
+    let guessDict = wordToDict(wordOfTheDay)
+    let colors = ["grey", "grey", "grey", "grey", "grey"]
+
+    if (guess.length < 5) {
+        return
     }
 
-    function compareWords(guess, wordOfTheDay) {
-        let dictWOTD = wordToDict(wordOfTheDay)
-        let guessDict = wordToDict(wordOfTheDay)
-        let colors = ["grey", "grey", "grey", "grey", "grey"]
-
-        if (guess.length < 5) {
-            return
-        }
-
-        // find correct letters, correct place
-        for (var i = 0; i < 5; i++) {
-            if (guess[i] == wordOfTheDay[i]) {
-                colors[i] = "green";
-                dictWOTD[wordOfTheDay[i]] -= 1;
-                guessDict[guess[i]] -= 1;
-            }
-        }
-
-        // find correct letters, wrong place 
-        for (var i = 0; i < 5; i++) {
-            if (guess[i] in dictWOTD && dictWOTD[wordOfTheDay[i]] != 0
-                && guessDict[guess[i]] != 0 && colors[i] != "green") {
-                colors[i] = "yellow";
-                dictWOTD[wordOfTheDay[i]] -= 1;
-                guessDict[guess[i]] -= 1;
-            }
-        }
-
-        return colors;
-    }
-
-    function wordToDict(word) {
-        let dict = {}
-        // convert word of the day to hashmap
-        for (var i = 0; i < word.length; i++) {
-            if (word[i] in dict) {
-                dict[word[i]] += 1
-            }
-            else {
-                dict[word[i]] = 1
-            }
-        }
-        return dict
-    }
-
-    function changeColors(row, colors) {
-        // change colors according to correctness of user guess
-        for (var i = 0; i < 5; i++) {
-            rows.get(row)[i].style.backgroundColor = colors[i], "transparent"
-        }
-
-        guess = "";
-    }
-
-    function isGameOver(row, colors) {
-        let winningArr = ["green", "green", "green", "green", "green"]
-        if (colors.toString() === winningArr.toString()) {
-            return "win"
-        }
-        if (row == 5) {
-            return "lose"
-        } else {
-            return "continue"
+    // find correct letters, correct place
+    for (var i = 0; i < 5; i++) {
+        if (guess[i] == wordOfTheDay[i]) {
+            colors[i] = "green";
+            dictWOTD[wordOfTheDay[i]] -= 1;
+            guessDict[guess[i]] -= 1;
         }
     }
 
-    function gameFinished(row, result) {
-        let attempts = row + 1
-        let time = seconds + (tens / 100)
-        clearInterval(Interval);
-        let isVictoryText;
-
-        if (result == true) {
-            isVictoryText = document.createTextNode(`You Win!`)
-
-        } else {
-            isVictoryText = document.createTextNode(`You Lose!`)
+    // find correct letters, wrong place 
+    for (var i = 0; i < 5; i++) {
+        if (guess[i] in dictWOTD && dictWOTD[wordOfTheDay[i]] != 0
+            && guessDict[guess[i]] != 0 && colors[i] != "green") {
+            colors[i] = "yellow";
+            dictWOTD[wordOfTheDay[i]] -= 1;
+            guessDict[guess[i]] -= 1;
         }
-
-        let attemptsText = document.createTextNode(`Attempts: ${attempts}`)
-        let timeText = document.createTextNode(`Time: ${time}`)
-
-        let results = document.getElementById("results")
-        let scoreCate = results.children
-        scoreCate[0].appendChild(isVictoryText)
-        scoreCate[1].appendChild(attemptsText)
-        scoreCate[2].appendChild(timeText)
-
-        results.style.visibility = "visible";
-        updateFormValues(result, time, attempts)
     }
 
-    function updateFormValues(winOrLoss, time, attempts) {
-        let result = document.getElementById("winOrLoss")
-        let timer = document.getElementById("time")
-        let tries = document.getElementById("attempts")
+    return colors;
+}
 
-        timer.value = time
-        result.value = winOrLoss
-        tries.value = attempts
+function wordToDict(word) {
+    let dict = {}
+    // convert word of the day to hashmap
+    for (var i = 0; i < word.length; i++) {
+        if (word[i] in dict) {
+            dict[word[i]] += 1
+        }
+        else {
+            dict[word[i]] = 1
+        }
     }
+    return dict
+}
+
+function changeColors(row, colors) {
+    // change colors according to correctness of user guess
+    for (var i = 0; i < 5; i++) {
+        rows.get(row)[i].style.backgroundColor = colors[i], "transparent"
+    }
+
+    guess = "";
+}
+
+function isGameOver(row, colors) {
+    let winningArr = ["green", "green", "green", "green", "green"]
+    if (colors.toString() === winningArr.toString()) {
+        return "win"
+    }
+    if (row == 5) {
+        return "lose"
+    } else {
+        return "continue"
+    }
+}
+
+function gameFinished(row, result) {
+    let attempts = row + 1
+    let time = seconds + (tens / 100)
+    clearInterval(Interval);
+    let isVictoryText;
+
+    if (result == true) {
+        isVictoryText = document.createTextNode(`You Win!`)
+
+    } else {
+        isVictoryText = document.createTextNode(`You Lose!`)
+    }
+
+    let attemptsText = document.createTextNode(`Attempts: ${attempts}`)
+    let timeText = document.createTextNode(`Time: ${time}`)
+    let wordOfTheDayText = document.createTextNode("Word: " + wordOfTheDay)
+    
+    let results = document.getElementById("results")   
+    let scoreInfo = results.children
+
+    scoreInfo[0].appendChild(wordOfTheDayText)
+    scoreInfo[1].appendChild(isVictoryText)
+    scoreInfo[2].appendChild(attemptsText)
+    scoreInfo[3].appendChild(timeText)
+
+    results.style.visibility = "visible";
+    updateFormValues(result, time, attempts)
+}
+
+function updateFormValues(winOrLoss, time, attempts) {
+    let result = document.getElementById("winOrLoss")
+    let timer = document.getElementById("time")
+    let tries = document.getElementById("attempts")
+
+    timer.value = time
+    result.value = winOrLoss
+    tries.value = attempts
+}

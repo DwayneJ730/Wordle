@@ -171,6 +171,9 @@
         </div>
         <div class="results" id="results">
         	<h1>
+        	
+        	</h1>
+        	<h1>
         		
         	</h1>
         	<p>
@@ -180,6 +183,8 @@
         	<p>
         		
         	</p>
+        	
+        	<a href="/">Play Again</a>
 	        <c:if test="${userId != null}">
 		        <form:form action="/scores/new" method="post" modelAttribute="newScore" >
 					<form:hidden path="user" value="${userId }"/>
