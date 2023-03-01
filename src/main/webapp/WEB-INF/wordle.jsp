@@ -57,6 +57,36 @@
     <div class="main-container">
     
         <div class="wordle-container" id="wordle">
+        <div class="results" id="results">
+        	<h2>
+        	
+        	</h2>
+        	<h1>
+        		
+        	</h1>
+        	<p>
+        		
+        	</p>
+        	
+        	<p>
+        		
+        	</p>
+        	
+        	<a href="/">Play Again</a>
+	        <c:if test="${userId != null}">
+		        <form:form action="/scores/new" method="post" modelAttribute="newScore" >
+					<form:hidden path="user" value="${userId }"/>
+					<form:hidden path="game" value="Wordle"/>
+					<form:hidden path="winOrLoss" id="winOrLoss" value=""/>
+					<form:hidden path="TimeToComplete" id="time" value=""/>
+					<form:hidden path="numOfTries" id="attempts" value=""/>
+				  
+				    
+				    <input type="submit" value="Submit"/>
+				</form:form>
+			</c:if>
+			
+		</div>
             <div class="row" id="row1">
                 <div class="square" contenteditable="true" id="1">
 
@@ -128,7 +158,7 @@
 
                 </div>
             </div>
-
+			
             <div class="row" id="row5">
                 <div class="square" contenteditable="true" id="21">
 
@@ -169,36 +199,7 @@
 
 
         </div>
-        <div class="results" id="results">
-        	<h2>
-        	
-        	</h2>
-        	<h1>
-        		
-        	</h1>
-        	<p>
-        		
-        	</p>
-        	
-        	<p>
-        		
-        	</p>
-        	
-        	<a href="/">Play Again</a>
-	        <c:if test="${userId != null}">
-		        <form:form action="/scores/new" method="post" modelAttribute="newScore" >
-					<form:hidden path="user" value="${userId }"/>
-					<form:hidden path="game" value="Wordle"/>
-					<form:hidden path="winOrLoss" id="winOrLoss" value=""/>
-					<form:hidden path="TimeToComplete" id="time" value=""/>
-					<form:hidden path="numOfTries" id="attempts" value=""/>
-				  
-				    
-				    <input type="submit" value="Submit"/>
-				</form:form>
-			</c:if>
-			
-		</div>
+   		
         
         
         <div class="wrapper">

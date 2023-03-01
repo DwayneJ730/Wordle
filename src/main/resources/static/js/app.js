@@ -9,9 +9,18 @@ const row6 = document.getElementById("row6").children
 const wordle = document.getElementById("5")
 let wordOfTheDay = "APPLE"
 
+async function getNewWord() {
+    try {
+        const response = await fetch( "https://random-word-api.herokuapp.com/word?length=5");
+        const data = await response.json();
+        return data[0];
+    } catch (error) {
+        console.error(error);
+ }
+}
 
-
-
+// let wordOfTheDay = getNewWord()
+// console.log(wordOfTheDay)
 
 const rows = new Map(
     [
@@ -196,9 +205,10 @@ function gameFinished(row, result) {
 
     if (result == true) {
         isVictoryText = document.createTextNode(`You Win!`)
-
+		
     } else {
         isVictoryText = document.createTextNode(`You Lose!`)
+        
     }
 
     let attemptsText = document.createTextNode(`Attempts: ${attempts}`)
@@ -209,9 +219,22 @@ function gameFinished(row, result) {
     let scoreInfo = results.children
 
     scoreInfo[0].appendChild(wordOfTheDayText)
+    scoreInfo[0].style.paddingTop = "30px"
+    
     scoreInfo[1].appendChild(isVictoryText)
+    if(result) {
+		scoreInfo[1].style.color = "green"
+	} else {
+		scoreInfo[1].style.color = "red"
+	}
+    
+    scoreInfo[1].style.paddingTop = "30px"
+    
     scoreInfo[2].appendChild(attemptsText)
+    scoreInfo[2].style.paddingTop = "30px"
+    
     scoreInfo[3].appendChild(timeText)
+    scoreInfo[3].style.paddingBottom = "50px"
 
     results.style.visibility = "visible";
     updateFormValues(result, time, attempts)
