@@ -170,9 +170,9 @@
 
         </div>
         <div class="results" id="results">
-        	<h1>
+        	<h2>
         	
-        	</h1>
+        	</h2>
         	<h1>
         		
         	</h1>
