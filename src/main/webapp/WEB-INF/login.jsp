@@ -18,6 +18,30 @@
 <body>
 	
 	<div class="page">
+		<div class="nav">
+	        <ul class="nav-list">
+	            <li>
+	                <a href="">More Games</a>
+	            </li>
+	            <li>
+	                <a style="text-decoration: none" href="/"><p class="title">Wordle</p></a>   
+	            </li>
+	            <li>
+	                <ul class="sub-nav-list">
+	                    
+	                    <li>
+	                    	<c:if test="${not empty userId}">
+								<a href="/logout">Logout</a>
+							</c:if>
+							<c:if test="${empty userId}">
+								<a href="/login">Login</a>
+							</c:if>
+	                        
+	                    </li>
+	                </ul>
+	            </li>
+	        </ul>
+   	 	</div>
 		<div class="container">
 			<form:form action="/register" method="post" modelAttribute="newUser" class="register-login">
 			<h3>Register</h3>

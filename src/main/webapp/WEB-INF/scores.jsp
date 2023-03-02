@@ -28,7 +28,7 @@
                 <a href="">More Games</a>
             </li>
             <li>
-                <a href="/"><p class="title">Wordle</p></a>   
+                <a style="text-decoration: none" href="/"><p class="title">Wordle</p></a>   
             </li>
             <li>
                 <ul class="sub-nav-list">
