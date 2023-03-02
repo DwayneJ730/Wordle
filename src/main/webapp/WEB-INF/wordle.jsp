@@ -88,7 +88,7 @@
 			
 		</div>
             <div class="row" id="row1">
-                <div class="square" contenteditable="true" id="1">
+                <div class="square" contenteditable="true"id="1">
 
                 </div>
                 <div class="square" contenteditable="true" id="2">
@@ -178,7 +178,7 @@
             </div>
 
             <div class="row" id="row6">
-                <div class="square" contenteditable="true" id="26">
+                <div class="square"  contenteditable="true" id="26">
 
                 </div>
                 <div class="square" contenteditable="true" id="27">

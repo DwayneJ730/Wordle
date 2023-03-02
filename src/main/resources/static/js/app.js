@@ -6,20 +6,8 @@ const row5 = document.getElementById("row5").children
 const row6 = document.getElementById("row6").children
 
 const wordle = document.getElementById("5")
-let wordOfTheDay = "APPLE"
 
-async function getNewWord() {
-    try {
-        const response = await fetch( "https://random-word-api.herokuapp.com/word?length=5");
-        const data = await response.json();
-        return data[0];
-    } catch (error) {
-        console.error(error);
- }
-}
-
-// let wordOfTheDay = getNewWord()
-// console.log(wordOfTheDay)
+let wordOfTheDay = ""
 
 const rows = new Map(
     [
@@ -33,43 +21,71 @@ const rows = new Map(
 )
 
 let win = false;
-
 var seconds = 00;
 var tens = 00;
 var appendTens = document.getElementById("tens")
 var appendSeconds = document.getElementById("seconds")
 var Interval;
 
-for (let row = 0; row < 6; row++) {
-    for (let col = 0; col < 5; col++) {
-        rows.get(row)[col].addEventListener('keypress', (event) => {
+let letterToKeys = {}
+main()
 
-            const character = String.fromCharCode(event.charCode);
-            if (rows.get(row)[col].innerText.length == 1) {
-                event.preventDefault();
-            }
-            if (/[a-z]/i.test(character)) {
-                if (col != 4) {
-                    // the character is a letter, so allow it
-                    moveCursor(rows.get(row)[col + 1])
-                }
+async function main() {
+	generateKeyboard()
+	letterToKeys = createLetterToKeyDict()
+    wordOfTheDay = await getNewWord()
+    wordOfTheDay = wordOfTheDay.toUpperCase()
+    initializeListenersPerCell()
+    moveCursor(rows.get(0)[0])
+}
 
-            } else if (event.key === "Enter") {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                startTurn(row)
-                moveCursor(rows.get(row + 1)[0])
+async function getNewWord() {
+    try {
+        const response = await fetch( "https://random-word-api.herokuapp.com/word?length=5")
+        const data = await response.json()
+        return data[0]
+    } catch (error) {
+        console.error(error)
+ }
+}
 
-            } else {
-                // the character is not a letter, so prevent it from being entered
-                event.preventDefault();
-            }
-        })
+function initializeListenersPerCell() {
+    for (let row = 0; row < 6; row++) {
+        for (let col = 0; col < 5; col++) {
+            rows.get(row)[col].addEventListener('keypress', playGame)
+        }
     }
 }
-moveCursor(rows.get(0)[0])
-generateKeyboard()
-letterToKeys = createLetterToKeyDict()
+
+async function playGame(event) {
+    var targetID = event.target.id
+    var row = (targetID % 5) === 0 ? Math.floor(targetID / 5) - 1 : Math.floor(targetID / 5);
+    var col = (targetID - 1) % 5
+
+    const character = String.fromCharCode(event.charCode);
+    if (rows.get(row)[col].innerText.length == 1) {
+        event.preventDefault()
+    }
+    if (/[a-z]/i.test(character)) {
+        if (col != 4) {
+            // the character is a letter, so allow it
+            moveCursor(rows.get(row)[col + 1])
+        }
+
+    } else if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault()
+        startTurn(row)
+        
+        if(row + 1 < 6) {
+			moveCursor(rows.get(row + 1)[0])
+		}
+
+    } else {
+        // the character is not a letter, so prevent it from being entered
+        event.preventDefault();
+    }
+}
 
 function start() {
     clearInterval(Interval)
@@ -80,7 +96,7 @@ function startTimer() {
     tens++;
 
     if (tens <= 9) {
-        appendTens.innerHTML = "0" + tens;
+        appendTens.innerHTML = "0" + tens
     }
 
     if (tens > 9) {
@@ -90,13 +106,13 @@ function startTimer() {
 
     if (tens > 99) {
         seconds++;
-        appendSeconds.innerHTML = "0" + seconds;
+        appendSeconds.innerHTML = "0" + seconds
         tens = 0;
-        appendTens.innerHTML = "0" + 0;
+        appendTens.innerHTML = "0" + 0
     }
 
     if (seconds > 9) {
-        appendSeconds.innerHTML = seconds;
+        appendSeconds.innerHTML = seconds
     }
 }
 
@@ -126,7 +142,10 @@ function generateKeyboard() {
 }
 
 function moveCursor(input) {
-    setTimeout(function () { input.focus(); }, 2);
+	setTimeout(() => {
+		input.focus();
+	}, 2)
+		
 }
 
 function startTurn(row) {
@@ -135,6 +154,7 @@ function startTurn(row) {
     }
 
     let guess = generateGuess(row)
+
     let colors = compareWords(guess, wordOfTheDay)
 
     changeBoardColors(row, colors)
@@ -302,7 +322,7 @@ function gameFinished(row, result) {
     
 	setTimeout(() => {
   		results.style.visibility = "visible"
-	}, "800")
+	}, "500")
     
     updateFormValues(result, time, attempts)
 }
@@ -311,8 +331,10 @@ function updateFormValues(winOrLoss, time, attempts) {
     let result = document.getElementById("winOrLoss")
     let timer = document.getElementById("time")
     let tries = document.getElementById("attempts")
-
-    timer.value = time
-    result.value = winOrLoss
-    tries.value = attempts
+	
+	if(result) {
+		timer.value = time
+    	result.value = winOrLoss
+    	tries.value = attempts
+	}
 }
