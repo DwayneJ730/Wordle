@@ -1,4 +1,3 @@
-
 const row1 = document.getElementById("row1").children
 const row2 = document.getElementById("row2").children
 const row3 = document.getElementById("row3").children
@@ -41,35 +40,6 @@ var appendTens = document.getElementById("tens")
 var appendSeconds = document.getElementById("seconds")
 var Interval;
 
-function start() {
-    clearInterval(Interval)
-    Interval = setInterval(startTimer, 10);
-}
-
-function startTimer() {
-    tens++;
-
-    if (tens <= 9) {
-        appendTens.innerHTML = "0" + tens;
-    }
-
-    if (tens > 9) {
-        appendTens.innerHTML = tens;
-
-    }
-
-    if (tens > 99) {
-        seconds++;
-        appendSeconds.innerHTML = "0" + seconds;
-        tens = 0;
-        appendTens.innerHTML = "0" + 0;
-    }
-
-    if (seconds > 9) {
-        appendSeconds.innerHTML = seconds;
-    }
-}
-
 for (let row = 0; row < 6; row++) {
     for (let col = 0; col < 5; col++) {
         rows.get(row)[col].addEventListener('keypress', (event) => {
@@ -99,10 +69,39 @@ for (let row = 0; row < 6; row++) {
 }
 moveCursor(rows.get(0)[0])
 generateKeyboard()
+letterToKeys = createLetterToKeyDict()
+
+function start() {
+    clearInterval(Interval)
+    Interval = setInterval(startTimer, 10);
+}
+
+function startTimer() {
+    tens++;
+
+    if (tens <= 9) {
+        appendTens.innerHTML = "0" + tens;
+    }
+
+    if (tens > 9) {
+        appendTens.innerHTML = tens;
+
+    }
+
+    if (tens > 99) {
+        seconds++;
+        appendSeconds.innerHTML = "0" + seconds;
+        tens = 0;
+        appendTens.innerHTML = "0" + 0;
+    }
+
+    if (seconds > 9) {
+        appendSeconds.innerHTML = seconds;
+    }
+}
 
 function generateKeyboard() {
 	let keys = "QWERTYUIOPASDFGHJKLZXCVBNM"
-	
 	
 	for(let i = 0; i < keys.length; i++) {
 		let tag = document.createElement("li")
@@ -138,7 +137,8 @@ function startTurn(row) {
     let guess = generateGuess(row)
     let colors = compareWords(guess, wordOfTheDay)
 
-    changeColors(row, colors)
+    changeBoardColors(row, colors)
+    changeKeyColors(guess, colors)
 
     if (isGameOver(row, colors) === "win") {
         gameFinished(row, true)
@@ -200,16 +200,53 @@ function wordToDict(word) {
             dict[word[i]] = 1
         }
     }
+    
     return dict
 }
 
-function changeColors(row, colors) {
+function changeBoardColors(row, colors) {
     // change colors according to correctness of user guess
     for (var i = 0; i < 5; i++) {
         rows.get(row)[i].style.backgroundColor = colors[i], "transparent"
     }
+}
 
-    guess = "";
+function changeKeyColors(guess, colors) {
+	for(let i = 0; i < guess.length; i++) {
+		let key = letterToKeys[guess[i]]
+		
+		if(colors[i] == "green") {
+			key.style.backgroundColor = "green", "transparent"
+		}
+		else if(colors[i] == "grey" && (key.style.backgroundColor != "green" || key.style.backgroundColor != "yellow")) {
+			key.style.backgroundColor = "#3a3a3c", "transparent"
+		}
+		else if(colors[i] == "yellow" && key.style.backgroundColor != "green"){
+			key.style.backgroundColor = "yellow", "transparent"
+		}
+	}
+}
+
+function createLetterToKeyDict() {
+	let keyRow1 = document.getElementById("keyRow1").children
+	let keyRow2 = document.getElementById("keyRow2").children
+	let keyRow3 = document.getElementById("keyRow3").children
+	
+	let letterToKey = {}
+	
+	for(let key1 of keyRow1) {
+		letterToKey[key1.innerText] = key1
+	}
+	
+	for(let key2 of keyRow2) {
+		letterToKey[key2.innerText] = key2
+	}
+	
+	for(let key3 of keyRow3) {
+		letterToKey[key3.innerText] = key3
+	}
+	
+	return letterToKey
 }
 
 function isGameOver(row, colors) {
@@ -228,6 +265,7 @@ function gameFinished(row, result) {
     let attempts = row + 1
     let time = seconds + (tens / 100)
     clearInterval(Interval);
+    
     let isVictoryText;
 
     if (result == true) {
@@ -254,7 +292,6 @@ function gameFinished(row, result) {
 	} else {
 		scoreInfo[1].style.color = "red"
 	}
-    
     scoreInfo[1].style.paddingTop = "30px"
     
     scoreInfo[2].appendChild(attemptsText)
@@ -262,8 +299,11 @@ function gameFinished(row, result) {
     
     scoreInfo[3].appendChild(timeText)
     scoreInfo[3].style.paddingBottom = "50px"
-
-    results.style.visibility = "visible";
+    
+	setTimeout(() => {
+  		results.style.visibility = "visible"
+	}, "800")
+    
     updateFormValues(result, time, attempts)
 }
 
