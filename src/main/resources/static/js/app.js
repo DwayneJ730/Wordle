@@ -69,6 +69,7 @@ async function playGame(event) {
     if (/[a-z]/i.test(character)) {
         if (col != 4) {
             // the character is a letter, so allow it
+            rows.get(row)[col + 1].contentEditable = "true"
             moveCursor(rows.get(row)[col + 1])
         }
 
@@ -76,8 +77,10 @@ async function playGame(event) {
         // Cancel the default action, if needed
         event.preventDefault()
         startTurn(row)
+        changeEditStatus(row)
         
         if(row + 1 < 6) {
+			rows.get(row + 1)[0].contentEditable = "true"
 			moveCursor(rows.get(row + 1)[0])
 		}
 
@@ -200,7 +203,7 @@ function compareWords(guess, wordOfTheDay) {
     for (var i = 0; i < 5; i++) {
         if (guess[i] in dictWOTD && dictWOTD[wordOfTheDay[i]] != 0
             && guessDict[guess[i]] != 0 && colors[i] != "green") {
-            colors[i] = "yellow";
+            colors[i] = "#E4D00A";
             dictWOTD[wordOfTheDay[i]] -= 1;
             guessDict[guess[i]] -= 1;
         }
@@ -238,11 +241,11 @@ function changeKeyColors(guess, colors) {
 		if(colors[i] == "green") {
 			key.style.backgroundColor = "green", "transparent"
 		}
-		else if(colors[i] == "grey" && (key.style.backgroundColor != "green" || key.style.backgroundColor != "yellow")) {
+		else if(colors[i] == "grey" && (key.style.backgroundColor != "green" || key.style.backgroundColor != "#E4D00A")) {
 			key.style.backgroundColor = "#3a3a3c", "transparent"
 		}
-		else if(colors[i] == "yellow" && key.style.backgroundColor != "green"){
-			key.style.backgroundColor = "yellow", "transparent"
+		else if(colors[i] == "#E4D00A" && key.style.backgroundColor != "green"){
+			key.style.backgroundColor = "#E4D00A", "transparent"
 		}
 	}
 }
@@ -282,6 +285,7 @@ function isGameOver(row, colors) {
 }
 
 function gameFinished(row, result) {
+	changeEditStatus()
     let attempts = row + 1
     let time = seconds + (tens / 100)
     clearInterval(Interval);
@@ -325,6 +329,12 @@ function gameFinished(row, result) {
 	}, "500")
     
     updateFormValues(result, time, attempts)
+}
+
+function changeEditStatus(row) {
+	for(let i = 0; i < 5; i++) {
+		rows.get(row)[i].contentEditable = "false"
+	}
 }
 
 function updateFormValues(winOrLoss, time, attempts) {
