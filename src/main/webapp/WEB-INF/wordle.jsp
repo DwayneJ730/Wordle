@@ -207,6 +207,18 @@
 			<p><span id="seconds">00</span>:<span id="tens">00</span></p>
 			
 		</div> 
+		
+		<ul class="keyboard" id="keyboard">
+			<li class="keyRow" id="keyRow1">
+			
+			</li>
+			<li class="keyRow" id="keyRow2">
+			
+			</li>
+			<li class="keyRow" id="keyRow3">
+			
+			</li>
+		</ul>
 
     </div>
 

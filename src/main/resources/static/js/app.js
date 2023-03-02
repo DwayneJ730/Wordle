@@ -98,6 +98,33 @@ for (let row = 0; row < 6; row++) {
     }
 }
 moveCursor(rows.get(0)[0])
+generateKeyboard()
+
+function generateKeyboard() {
+	let keys = "QWERTYUIOPASDFGHJKLZXCVBNM"
+	
+	
+	for(let i = 0; i < keys.length; i++) {
+		let tag = document.createElement("li")
+		tag.innerText = keys[i]
+		tag.style.width = "30 px"
+		tag.style.backgroundColor = "black"
+		tag.style.border = "solid whitesmoke 2px"
+		tag.style.borderRadius = "6px" 
+		tag.style.padding = "10px"
+		tag.style.textAlign = "center"
+		
+		if(i < 10) {
+			keyRow1.appendChild(tag)
+		}
+		else if(i < 19) {
+			keyRow2.appendChild(tag)
+		}
+		else {
+			keyRow3.appendChild(tag)
+		}
+	}
+}
 
 function moveCursor(input) {
     setTimeout(function () { input.focus(); }, 2);
