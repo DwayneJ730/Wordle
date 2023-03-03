@@ -82,7 +82,7 @@
 						<form:hidden path="numOfTries" id="attempts" value=""/>
 					  
 					    
-					    <input type="submit" value="Submit"/>
+					    <input type="submit" value="Save"/>
 					</form:form>
 				</c:if>
 				

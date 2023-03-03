@@ -285,7 +285,7 @@ function isGameOver(row, colors) {
 }
 
 function gameFinished(row, result) {
-	changeEditStatus()
+	
     let attempts = row + 1
     let time = seconds + (tens / 100)
     clearInterval(Interval);
@@ -306,7 +306,7 @@ function gameFinished(row, result) {
     
     let results = document.getElementById("results")   
     let scoreInfo = results.children
-
+	
     scoreInfo[0].appendChild(wordOfTheDayText)
     scoreInfo[0].style.paddingTop = "30px"
     
@@ -324,11 +324,13 @@ function gameFinished(row, result) {
     scoreInfo[3].appendChild(timeText)
     scoreInfo[3].style.paddingBottom = "50px"
     
-	setTimeout(() => {
-  		results.style.visibility = "visible"
-	}, "500")
-    
     updateFormValues(result, time, attempts)
+	
+    changeEditStatus(row)
+    
+    setTimeout(() => {
+		results.style.visibility = "visible"
+	}, 500)  
 }
 
 function changeEditStatus(row) {
@@ -345,6 +347,6 @@ function updateFormValues(winOrLoss, time, attempts) {
 	if(result) {
 		timer.value = time
     	result.value = winOrLoss
-    	tries.value = attempts
+    	tries.value = attempts	
 	}
 }
